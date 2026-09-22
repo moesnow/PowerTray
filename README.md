@@ -3,6 +3,7 @@
 [![CI](https://github.com/moesnow/PowerTray/actions/workflows/ci.yml/badge.svg)](https://github.com/moesnow/PowerTray/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/moesnow/PowerTray)](https://github.com/moesnow/PowerTray/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/moesnow/PowerTray/total)](https://github.com/moesnow/PowerTray/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 一款常驻 Windows 托盘区的电源超时快捷设置小工具：左键一点即可修改「关闭屏幕 / 睡眠 / 休眠」的时间，界面与 Windows 11 原生风格保持一致，并自动跟随系统的深色 / 浅色模式。
 
@@ -135,6 +136,10 @@ $env:POWERTRAY_THEME = 'light'; .\src\PowerTray\bin\Debug\net8.0-windows\PowerTr
 - 控件内文字通过**继承**获取前景色（隐式 TextBlock 样式不设 Foreground），确保选中态 / 主按钮上的文字能跟随强调色前景，避免深底黑字。
 - 托盘图标为运行时 GDI+ 绘制的单色电源符号，按任务栏明暗自动取深 / 浅色；exe 图标由 `tools/Generate-Icon.ps1` 生成（圆角底块 + 同一符号）。
 - 快速面板支持任务栏位于屏幕任意一边，自动贴近托盘图标并按 DPI 缩放定位。
+
+## 开源协议
+
+本项目基于 **GNU General Public License v3.0** 开源，完整条款见 [LICENSE](LICENSE)。
 
 ## 已知限制
 
