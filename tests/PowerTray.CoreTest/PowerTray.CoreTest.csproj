@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PowerTray.CoreTest</RootNamespace>
+    <AssemblyName>PowerTray.CoreTest</AssemblyName>
+  </PropertyGroup>
+
+  <!-- 直接复用主工程的电源读写实现 -->
+  <ItemGroup>
+    <Compile Include="..\..\src\PowerTray\Native\NativeMethods.cs" Link="Native\NativeMethods.cs" />
+    <Compile Include="..\..\src\PowerTray\Native\PowerManager.cs" Link="Native\PowerManager.cs" />
+  </ItemGroup>
+
+</Project>

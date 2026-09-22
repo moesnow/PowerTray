@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PowerTray</RootNamespace>
+    <AssemblyName>PowerTray</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <AssemblyTitle>PowerTray</AssemblyTitle>
+    <Product>PowerTray</Product>
+    <Description>托盘快速修改关闭屏幕 / 睡眠 / 休眠时间</Description>
+    <Company>PowerTray</Company>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- WFAC010：DPI 感知通过 app.manifest（PerMonitorV2）声明，WPF 项目无需再设 WinForms 属性 -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Assets\app.ico" />
+  </ItemGroup>
+
+  <!-- 关闭 WinForms / System.Drawing 的隐式 using，避免与 WPF 类型同名冲突 -->
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+</Project>

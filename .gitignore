@@ -1,0 +1,16 @@
+# 构建输出
+bin/
+obj/
+dist/
+*.user
+
+# 本机临时产物（截图草稿、图标预览等）
+tools/shots/
+tools/icon-preview.png
+
+# IDE / 系统
+.vs/
+.vscode/
+*.suo
+Thumbs.db
+Desktop.ini

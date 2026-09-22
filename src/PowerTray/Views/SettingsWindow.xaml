@@ -1,0 +1,118 @@
+<Window x:Class="PowerTray.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PowerTray 设置"
+        Width="680"
+        MinWidth="560"
+        SizeToContent="Height"
+        MaxHeight="780"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBackgroundBrush}"
+        FontFamily="{DynamicResource AppFontFamily}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        SnapsToDevicePixels="True"
+        UseLayoutRounding="True"
+        PreviewKeyDown="OnPreviewKeyDown">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24,20,24,20">
+
+            <!-- 时间挡位 -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="时间挡位" Style="{StaticResource CardTitle}" />
+                    <TextBlock x:Name="DeviceHint" Style="{StaticResource CardDescription}" Margin="0,4,0,0" />
+                    <TextBlock Text="以下挡位会显示在托盘快速弹窗中，点击即应用到当前电源计划；点击挡位可删除，也可自由添加。"
+                               Style="{StaticResource CardDescription}"
+                               Margin="0,4,0,14" />
+
+                    <!-- 关闭屏幕 -->
+                    <TextBlock Text="关闭屏幕" Style="{StaticResource SectionTitle}" />
+                    <WrapPanel x:Name="ScreenChipsPanel" Margin="0,8,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="添加：" Style="{StaticResource SecondaryText}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBox x:Name="ScreenAddValue" Width="72" MaxLength="4" Style="{StaticResource AppTextBox}" />
+                        <RadioButton x:Name="ScreenUnitMinute" Content="分钟" GroupName="UnitScreen" IsChecked="True"
+                                     Style="{StaticResource SegmentedItem}" Margin="6,0,0,0" />
+                        <RadioButton x:Name="ScreenUnitHour" Content="小时" GroupName="UnitScreen"
+                                     Style="{StaticResource SegmentedItem}" Margin="4,0,0,0" />
+                        <Button Content="添加" Style="{StaticResource SecondaryButton}" Padding="14,5" Margin="8,0,0,0"
+                                Click="OnAddScreen" />
+                    </StackPanel>
+                    <TextBlock x:Name="ScreenAddError" Style="{StaticResource ErrorText}" Margin="0,4,0,0" Visibility="Collapsed" />
+
+                    <!-- 睡眠 -->
+                    <TextBlock Text="睡眠" Style="{StaticResource SectionTitle}" Margin="0,18,0,0" />
+                    <Border x:Name="SleepHint" Style="{StaticResource InfoBar}" Margin="0,6,0,0" Visibility="Collapsed">
+                        <TextBlock Text="当前设备不支持睡眠，此设置暂不生效。"
+                                   Style="{StaticResource SecondaryText}"
+                                   FontSize="11.5"
+                                   Foreground="{DynamicResource InfoTextBrush}" />
+                    </Border>
+                    <WrapPanel x:Name="SleepChipsPanel" Margin="0,8,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="添加：" Style="{StaticResource SecondaryText}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBox x:Name="SleepAddValue" Width="72" MaxLength="4" Style="{StaticResource AppTextBox}" />
+                        <RadioButton x:Name="SleepUnitMinute" Content="分钟" GroupName="UnitSleep" IsChecked="True"
+                                     Style="{StaticResource SegmentedItem}" Margin="6,0,0,0" />
+                        <RadioButton x:Name="SleepUnitHour" Content="小时" GroupName="UnitSleep"
+                                     Style="{StaticResource SegmentedItem}" Margin="4,0,0,0" />
+                        <Button Content="添加" Style="{StaticResource SecondaryButton}" Padding="14,5" Margin="8,0,0,0"
+                                Click="OnAddSleep" />
+                    </StackPanel>
+                    <TextBlock x:Name="SleepAddError" Style="{StaticResource ErrorText}" Margin="0,4,0,0" Visibility="Collapsed" />
+
+                    <!-- 休眠 -->
+                    <TextBlock Text="休眠" Style="{StaticResource SectionTitle}" Margin="0,18,0,0" />
+                    <Border x:Name="HibernateHint" Style="{StaticResource InfoBar}" Margin="0,6,0,0" Visibility="Collapsed">
+                        <TextBlock Text="当前设备未启用休眠（hiberfil.sys 不存在），此设置暂不生效。"
+                                   Style="{StaticResource SecondaryText}"
+                                   FontSize="11.5"
+                                   Foreground="{DynamicResource InfoTextBrush}" />
+                    </Border>
+                    <WrapPanel x:Name="HibernateChipsPanel" Margin="0,8,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="添加：" Style="{StaticResource SecondaryText}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBox x:Name="HibernateAddValue" Width="72" MaxLength="4" Style="{StaticResource AppTextBox}" />
+                        <RadioButton x:Name="HibernateUnitMinute" Content="分钟" GroupName="UnitHibernate" IsChecked="True"
+                                     Style="{StaticResource SegmentedItem}" Margin="6,0,0,0" />
+                        <RadioButton x:Name="HibernateUnitHour" Content="小时" GroupName="UnitHibernate"
+                                     Style="{StaticResource SegmentedItem}" Margin="4,0,0,0" />
+                        <Button Content="添加" Style="{StaticResource SecondaryButton}" Padding="14,5" Margin="8,0,0,0"
+                                Click="OnAddHibernate" />
+                    </StackPanel>
+                    <TextBlock x:Name="HibernateAddError" Style="{StaticResource ErrorText}" Margin="0,4,0,0" Visibility="Collapsed" />
+                </StackPanel>
+            </Border>
+
+            <!-- 常规 -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="常规" Style="{StaticResource CardTitle}" />
+                    <CheckBox x:Name="StartWithWindowsCheck"
+                              Content="开机时自动启动 PowerTray"
+                              Style="{StaticResource AppCheckBox}"
+                              Margin="0,14,0,0"
+                              Click="OnStartWithWindowsChanged" />
+                    <TextBlock Text="写入当前用户的启动项（HKCU\\...\\Run，无需管理员权限）。"
+                               Style="{StaticResource CardDescription}"
+                               Margin="29,6,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- 底部 -->
+            <Grid Margin="0,2,0,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="恢复默认挡位" Style="{StaticResource SecondaryButton}" Click="OnResetPresets" />
+                    <TextBlock x:Name="VersionText"
+                               Style="{StaticResource TertiaryText}"
+                               FontSize="11"
+                               VerticalAlignment="Center"
+                               Margin="12,0,0,0" />
+                </StackPanel>
+                <Button Content="完成" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" Click="OnDone" />
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

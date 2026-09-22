@@ -1,0 +1,59 @@
+name: Release
+
+# 推送形如 v1.0.0 的标签后：构建绿色便携版 + Inno Setup 安装包，并自动创建 GitHub Release。
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: 解析版本号（来自标签）
+        id: ver
+        shell: pwsh
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          if ($version -notmatch '^\d+\.\d+\.\d+') { throw "标签格式应为 vX.Y.Z，当前：${{ github.ref_name }}" }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "version = $version"
+
+      - name: 确保 Inno Setup 可用
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup -y --no-progress
+          }
+
+      - name: 构建（图标 → publish → 安装包）
+        shell: pwsh
+        run: .\build.ps1 -Version '${{ steps.ver.outputs.version }}'
+
+      - name: 打包绿色便携版 zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path .\dist\publish\* `
+            -DestinationPath ".\dist\PowerTray-${{ steps.ver.outputs.version }}-win-x64.zip" -Force
+          Get-ChildItem .\dist | Format-Table Name, Length
+
+      - name: 创建 GitHub Release 并上传资产
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create '${{ github.ref_name }}' `
+            --title 'PowerTray v${{ steps.ver.outputs.version }}' `
+            --generate-notes `
+            (Get-Item .\dist\PowerTray-Setup-*.exe).FullName `
+            (Get-Item .\dist\PowerTray-*-win-x64.zip).FullName
